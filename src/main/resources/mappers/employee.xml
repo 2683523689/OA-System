@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhang.oa.dao.EmployeeDao">
+    <select id="selectById" parameterType="Long" resultType="com.zhang.oa.entity.Employee">
+        select * from adm_employee where employee_id=#{employeeId};
+    </select>
+    <select id="selectLeader" parameterType="com.zhang.oa.entity.Employee" resultType="com.zhang.oa.entity.Employee">
+        select * from adm_employee
+        <where>
+            <if test="emp.level &lt; 7">
+                level=7 and department_id=#{emp.departmentId}
+            </if>
+            <if test="emp.level == 7">
+                level=8
+            </if>
+            <if test="emp.level == 8">
+                employee_id=#{emp.employeeId}
+            </if>
+        </where>
+    </select>
+</mapper>

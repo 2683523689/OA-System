@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>办公OA系统</title>
+    <link rel="stylesheet" href="/resources/layui/css/layui.css">
+    <style>
+        body{
+            background-color: #f2f2f2;
+        }
+        .oa-container{
+            position: absolute;
+            width: 400px;
+            height: 350px;
+            top:50%;
+            left: 50%;
+            padding: 20px;
+            margin-left: -200px;
+            margin-top: -175px;
+        }
+        #username,#password{
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+<div class="oa-container">
+    <h1 style="text-align: center;margin-bottom: 20px">办公OA系统</h1>
+    <form class="layui-form" method="post">
+        <div class="layui-form-item">
+            <input type="text" name="username" id="username" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+            <input type="password" name="password" id="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="login">立即提交</button>
+        </div>
+    </form>
+</div>
+<script src="resources/layui/layui.js"></script>
+<script>
+<!--    data参数包含表单数据，返回true表单提交，false阻止提交-->
+    layui.form.on("submit(login)",function (formData){
+        layui.$.ajax({
+            url:"/check_login",
+            data:formData.field,
+            type:"post",
+            dataType:"json",
+            success:function (json) {
+                console.log(json)
+                if(json.code=="0"){
+                    // layui.layer.msg("登录成功")
+                    window.location.href=json.redirect_url;
+                }else{
+                    layui.layer.msg(json.message)
+                }
+            }
+        })
+        return false;
+    })
+</script>
+</body>
+</html>
